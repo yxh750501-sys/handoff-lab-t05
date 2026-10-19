@@ -82,6 +82,35 @@ export function applySuccess(input, reading, meta = {}) {
   return state;
 }
 
+// Merge newly published dates without replacing the visitor's existing daily rows.
+// TODO: reconcile existing dates by fetched_at so newer public corrections can win.
+export function mergePublicHistory(input, history) {
+  if (!history || history.schema_version !== 't04-public-history-v1' ||
+      !Array.isArray(history.readings) || history.readings.length > 2) {
+    throw Error('공개 기록 형식 오류');
+  }
+  // Validate the entire response before producing any changes.
+  const readings = history.readings.map(validateReading);
+  let state = structuredClone(input);
+  state.raw_by_date = { ...state.raw_by_date };
+  for (const reading of readings.sort((a, b) => a.record_date.localeCompare(b.record_date))) {
+    const existing = state.daily_readings.find(row =>
+      row.signal_id === reading.signal_id && row.record_date === reading.record_date);
+    if (existing) continue;
+    const previousCurrent = state.current_reading;
+    state = applySuccess(state, reading);
+    if (history.raw_by_date?.[reading.record_date]) {
+      state.raw_by_date[reading.record_date] = structuredClone(history.raw_by_date[reading.record_date]);
+    }
+    if (previousCurrent && previousCurrent.record_date > reading.record_date) {
+      state.current_reading = previousCurrent;
+      state.last_comparison = comparisonFor(state.daily_readings, previousCurrent);
+    }
+  }
+  state.last_raw = state.current_reading ? state.raw_by_date[state.current_reading.record_date] ?? null : null;
+  return state;
+}
+
 export function applyError(input, errorCode, meta = {}) {
   if (!ERROR_CODES.includes(errorCode)) throw Error('알 수 없는 실패 종류입니다.');
   const state = structuredClone(input);

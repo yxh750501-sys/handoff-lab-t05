@@ -1,4 +1,4 @@
-import { LIVE_URL, applyError, applySuccess, classifyLiveError, emptyState, normalizeLive, runFixture } from './core.mjs';
+import { LIVE_URL, applyError, applySuccess, classifyLiveError, emptyState, mergePublicHistory, normalizeLive, runFixture } from './core.mjs';
 import { readState, resetDemo, updateState } from './store.mjs';
 
 const $ = id => document.getElementById(id);
@@ -152,23 +152,13 @@ $('demo-retry').addEventListener('click', () => runDemo('recover-d2'));
 
 try {
   [live, demo] = await Promise.all([readState('live'), readState('demo')]);
-  if (!live.daily_readings.length) {
-    try {
-      const response = await fetch('./data/live-history.json', { cache: 'no-store' });
-      if (response.ok) {
-        const publicHistory = await response.json();
-        if (publicHistory.schema_version !== 't04-public-history-v1' || !Array.isArray(publicHistory.readings) || publicHistory.readings.length > 2) throw Error('공개 기록 형식 오류');
-        live = await updateState('live', state => {
-          if (state.daily_readings.length) return state;
-          let next = state;
-          for (const reading of publicHistory.readings) next = applySuccess(next, reading);
-          next.raw_by_date = publicHistory.raw_by_date ?? {};
-          next.last_raw = next.current_reading ? next.raw_by_date[next.current_reading.record_date] ?? null : null;
-          return next;
-        });
-      }
-    } catch { /* 기록이 아직 없거나 검증에 실패하면 브라우저의 기존 값만 보여 줍니다. */ }
-  }
+  try {
+    const response = await fetch('./data/live-history.json', { cache: 'no-store' });
+    if (response.ok) {
+      const publicHistory = await response.json();
+      live = await updateState('live', state => mergePublicHistory(state, publicHistory));
+    }
+  } catch { /* 공개 자료가 없거나 검증에 실패하면 브라우저의 기존 값을 유지합니다. */ }
   renderLive(); renderDemo();
 }
 catch (error) { $('live-note').textContent = `브라우저 저장소를 열 수 없습니다: ${error.message}`; }
