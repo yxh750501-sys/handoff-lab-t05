@@ -1,0 +1,56 @@
+{
+  "schema_version": "t04-public-history-v1",
+  "source": "Open-Meteo",
+  "readings": [
+    {
+      "signal_id": "seoul-temperature-2m",
+      "normalized_value": 21.8,
+      "unit": "°C",
+      "source_name": "Open-Meteo · 서울 2m 기온",
+      "source_url": "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m&timezone=Asia%2FSeoul&forecast_days=1",
+      "source_time": "2026-10-16T07:00:00.000Z",
+      "fetched_at": "2026-10-16T07:03:07.005Z",
+      "record_timezone": "Asia/Seoul",
+      "record_date": "2026-10-16"
+    },
+    {
+      "signal_id": "seoul-temperature-2m",
+      "normalized_value": 14.4,
+      "unit": "°C",
+      "source_name": "Open-Meteo · 서울 2m 기온",
+      "source_url": "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m&timezone=Asia%2FSeoul&forecast_days=1",
+      "source_time": "2026-10-16T16:15:00.000Z",
+      "fetched_at": "2026-10-16T16:27:48.811Z",
+      "record_timezone": "Asia/Seoul",
+      "record_date": "2026-10-17"
+    }
+  ],
+  "raw_by_date": {
+    "2026-10-16": {
+      "timezone": "Asia/Seoul",
+      "current": {
+        "time": "2026-10-16T16:00",
+        "interval": 900,
+        "temperature_2m": 21.8
+      },
+      "current_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature_2m": "°C"
+      }
+    },
+    "2026-10-17": {
+      "timezone": "Asia/Seoul",
+      "current": {
+        "time": "2026-10-17T01:15",
+        "interval": 900,
+        "temperature_2m": 14.4
+      },
+      "current_units": {
+        "time": "iso8601",
+        "interval": "seconds",
+        "temperature_2m": "°C"
+      }
+    }
+  }
+}

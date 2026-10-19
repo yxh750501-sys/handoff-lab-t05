@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142b35">
+  <title>오늘의 서울 기온 · 진짜 정보판</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header class="site-head">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">◒</span><span>DAILY SIGNAL <small>T04 · 오늘의 진짜 정보판</small></span></div>
+    <a class="top-link" href="#method">기록 방식 보기 ↗</a>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">ONE NUMBER · EVERY DAY</p>
+      <h1 id="page-title">오늘, 서울은<br><em>몇 도일까요?</em></h1>
+      <p class="intro-copy">서울 시청 인근의 2m 기온을 공개 원천에서 읽습니다. 값이 언제 관측됐고 언제 조회됐는지 함께 남깁니다.</p>
+      <div class="pills"><span>공개 데이터</span><span>비밀키 없음</span><span>기준 시간대 Asia/Seoul</span></div>
+    </section>
+
+    <section class="board" aria-labelledby="live-heading">
+      <div class="section-head"><div><p class="eyebrow">01 / LIVE READING</p><h2 id="live-heading">실제 기온</h2></div><span id="live-badge" class="status-badge neutral">조회 전</span></div>
+      <div class="reading-grid">
+        <div class="reading-main"><span class="small-label">서울 · 2m 기온</span><p class="reading-value"><strong id="live-value">—</strong><span id="live-unit">°C</span></p><p id="live-note" class="reading-note" role="status">공개 원천에서 값을 조회해 주세요.</p><button id="live-refresh" class="primary-button" type="button">지금 조회하기 <span aria-hidden="true">↗</span></button></div>
+        <dl class="facts"><div><dt>출처</dt><dd><a id="live-source" href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></dd></div><div><dt>출처 관측 시각</dt><dd id="live-source-time">—</dd></div><div><dt>조회 시각</dt><dd id="live-fetched-time">—</dd></div><div><dt>기준 시간대</dt><dd>Asia/Seoul (KST)</dd></div></dl>
+      </div>
+      <div class="comparison"><span>어제 대비</span><strong id="live-delta">어제 기록이 있어야 표시됩니다.</strong></div>
+      <div class="records"><div class="subhead"><h3>일별 저장 기록</h3><span id="live-count">0건</span></div><div id="live-rows" class="record-list"><p class="empty">아직 저장된 값이 없습니다.</p></div><button id="live-export" class="export-button" type="button" disabled>일별 기록 JSON 내려받기 ↗</button></div>
+      <details class="data-details"><summary>원자료 · 정규화 · 화면값 대조</summary><div class="data-grid"><div><h4>원자료 <small>Open-Meteo 응답</small></h4><pre id="raw-data">조회 전</pre></div><div><h4>저장값 <small>정규화 기록</small></h4><pre id="stored-data">조회 전</pre></div><div><h4>화면값 <small>값과 단위</small></h4><pre id="display-data">조회 전</pre></div></div></details>
+    </section>
+
+    <section class="lab" aria-labelledby="lab-heading">
+      <div class="section-head"><div><p class="eyebrow">02 / FAILURE LAB</p><h2 id="lab-heading">고장 나도 값은 남게</h2></div><span class="lab-tag">합성 시험값 전용</span></div>
+      <p class="section-copy">아래 재생은 실제 기온 기록과 완전히 분리됩니다. 공개 고정 자산을 그대로 읽어 실패 다섯 종류와 복구를 검사합니다.</p>
+      <div class="lab-toolbar"><button id="demo-reset" type="button" class="secondary-button">시험 상태 초기화</button><button id="demo-baseline" type="button" class="secondary-button">기준값 100 → 105 준비</button><button id="demo-next" type="button" class="secondary-button">다음 날짜 120 재생</button></div>
+      <div class="fixture-buttons" aria-label="합성 실패 재생"><button data-fixture="timeout" type="button">느린 응답</button><button data-fixture="auth-401" type="button">원천 401</button><button data-fixture="rate-429" type="button">호출 제한</button><button data-fixture="offline" type="button">오프라인</button><button data-fixture="schema-break" type="button">형식 변경</button></div>
+      <div class="lab-state"><div><span class="small-label">시험 값</span><p><strong id="demo-value">—</strong><span id="demo-unit"> pt</span></p></div><div><span class="small-label">상태</span><p id="demo-status">준비 전</p></div><div><span class="small-label">일별 행</span><p id="demo-count">0건</p></div></div>
+      <p id="demo-message" class="lab-message" role="status">기준값을 준비한 뒤 실패를 재생해 보세요.</p>
+      <button id="demo-retry" class="primary-button" type="button" hidden>다시 시도 · 다음 날짜 복구 ↗</button>
+      <div id="demo-rows" class="demo-rows"></div>
+      <p class="fixture-credit">공개 자산 <a href="./assets/studio-task-assets/t04-real-information-board/public-contract.json">aleph-t04-real-information-board-public-contract-v2</a> · <a href="./assets/studio-task-assets/t04-real-information-board/asset-manifest.json">SHA-256 manifest</a></p>
+    </section>
+
+    <section id="method" class="method"><p class="eyebrow">03 / HOW IT WORKS</p><h2>값보다 중요한 맥락</h2><div class="method-grid"><div><span>01</span><h3>한 날짜, 한 줄</h3><p>같은 KST 날짜의 성공 조회는 기존 줄을 갱신합니다. 다음 날짜는 새 줄로 저장합니다.</p></div><div><span>02</span><h3>오류는 따로</h3><p>외부 원천이 응답하지 않아도 마지막 정상값을 남기고 오래된 값이라고 명확히 표시합니다.</p></div><div><span>03</span><h3>다시 계산</h3><p>어제 대비 값은 저장된 서로 다른 날짜 두 줄의 값과 단위로 계산합니다.</p></div></div></section>
+  </main>
+  <footer>DAILY SIGNAL · 공개 원천: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> · 브라우저에 일별 기록 저장</footer>
+</body>
+</html>
