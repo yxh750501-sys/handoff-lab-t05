@@ -43,7 +43,7 @@ function renderLive() {
   const badge = $('live-badge');
   badge.className = `status-badge ${stale ? 'stale' : reading ? 'fresh' : 'neutral'}`;
   badge.textContent = stale ? reading ? '오래된 값' : '조회 실패' : reading ? '최신 조회' : '조회 전';
-  setText('live-value', reading?.normalized_value ?? '—');
+  setText('live-value', reading ? reading.normalized_value.toFixed(1) : '—');
   setText('live-unit', reading?.unit ?? '°C');
   setText('live-note', stale ? `${ERROR_TEXT[live.status.error_code]}${reading ? ' 아래 값은 마지막 정상값입니다.' : ''}` :
     reading ? `${reading.record_date} 기준 정상값입니다.` : '공개 원천에서 값을 조회해 주세요.');

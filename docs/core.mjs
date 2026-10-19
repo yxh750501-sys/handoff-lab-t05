@@ -82,26 +82,44 @@ export function applySuccess(input, reading, meta = {}) {
   return state;
 }
 
-// Merge newly published dates without replacing the visitor's existing daily rows.
-// TODO: reconcile existing dates by fetched_at so newer public corrections can win.
+// Merge published dates while preserving a more recently fetched local reading.
 export function mergePublicHistory(input, history) {
   if (!history || history.schema_version !== 't04-public-history-v1' ||
       !Array.isArray(history.readings) || history.readings.length > 2) {
     throw Error('공개 기록 형식 오류');
   }
-  // Validate the entire response before producing any changes.
-  const readings = history.readings.map(validateReading);
+  // Validate the entire response before producing any changes. If a publication
+  // contains duplicate dates, only its newest reading for each signal/date wins.
+  const validated = history.readings.map(validateReading);
+  if (validated.some(reading => reading.signal_id !== SIGNAL_ID || reading.unit !== '°C')) {
+    throw Error('공개 기록 신호가 올바르지 않습니다.');
+  }
+  for (const reading of validated) {
+    const raw = history.raw_by_date?.[reading.record_date];
+    if (!raw || raw.timezone !== TIMEZONE ||
+        typeof raw.current?.time !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(raw.current.time) ||
+        kstDate(`${raw.current.time}:00+09:00`) !== reading.record_date ||
+        raw.current.temperature_2m !== reading.normalized_value ||
+        raw.current_units?.temperature_2m !== reading.unit) {
+      throw Error('공개 원자료가 기록과 일치하지 않습니다.');
+    }
+  }
+  const byDate = new Map();
+  for (const reading of validated) {
+    const key = `${reading.signal_id}:${reading.record_date}`;
+    const previous = byDate.get(key);
+    if (!previous || Date.parse(reading.fetched_at) > Date.parse(previous.fetched_at)) byDate.set(key, reading);
+  }
+  const readings = [...byDate.values()];
   let state = structuredClone(input);
   state.raw_by_date = { ...state.raw_by_date };
   for (const reading of readings.sort((a, b) => a.record_date.localeCompare(b.record_date))) {
     const existing = state.daily_readings.find(row =>
       row.signal_id === reading.signal_id && row.record_date === reading.record_date);
-    if (existing) continue;
+    if (existing && Date.parse(existing.last_fetched_at) >= Date.parse(reading.fetched_at)) continue;
     const previousCurrent = state.current_reading;
     state = applySuccess(state, reading);
-    if (history.raw_by_date?.[reading.record_date]) {
-      state.raw_by_date[reading.record_date] = structuredClone(history.raw_by_date[reading.record_date]);
-    }
+    state.raw_by_date[reading.record_date] = structuredClone(history.raw_by_date[reading.record_date]);
     if (previousCurrent && previousCurrent.record_date > reading.record_date) {
       state.current_reading = previousCurrent;
       state.last_comparison = comparisonFor(state.daily_readings, previousCurrent);
