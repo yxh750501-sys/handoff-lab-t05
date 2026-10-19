@@ -1,0 +1,61 @@
+{
+  "schema_version": "t05-sequence-v1",
+  "fixed_request": "protocol/initial-request.md",
+  "fixed_checks": "protocol/fixed-tests.json",
+  "frozen_checks_sha256": "3fbed28349ef68f076e171a22de4d86557ca4639e160b873d20e20bcd12370a8",
+  "frozen_runner_sha256": "4e0750d2c245f4c6af82dadf20a813c5282242023ac5abcd6364297b9cc6990d",
+  "common_limits": { "working_minutes": 30, "tool_calls": 35 },
+  "events": [
+    {
+      "order": 1,
+      "event": "AI A 시작",
+      "invoked_at_utc": "2026-10-19T05:38:51Z",
+      "first_work_at_utc": "2026-10-19T05:39:14Z",
+      "service": "OpenAI",
+      "model_id": "gpt-6.1-sol",
+      "source_commit": "f41c51a02ee077da29fe3a4d52d7b8ca6349f281"
+    },
+    {
+      "order": 2,
+      "event": "AI A 종료·인수인계",
+      "at_utc": "2026-10-19T05:40:34Z",
+      "source_commit": "e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b",
+      "working_seconds": 80,
+      "tool_calls": 13,
+      "fixed_checks_passed": 8,
+      "failed_ids": ["T05-F03", "T05-F10"],
+      "error_rounds": 1,
+      "handoff_sha256": "9b94778b717394cb8732f2f523be327cac4a0c557e512236d7a412044de3a08e"
+    },
+    {
+      "order": 3,
+      "event": "AI B 시작",
+      "invoked_at_utc": "2026-10-19T05:43:02Z",
+      "first_work_at_utc": "2026-10-19T05:43:30Z",
+      "service": "OpenAI",
+      "model_id": "gpt-6-luna",
+      "source_commit": "e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b",
+      "handoff_sha256": "9b94778b717394cb8732f2f523be327cac4a0c557e512236d7a412044de3a08e"
+    },
+    {
+      "order": 4,
+      "event": "AI B 종료",
+      "at_utc": "2026-10-19T05:44:40Z",
+      "source_commit": "49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151",
+      "working_seconds": 70,
+      "tool_calls": 15,
+      "fixed_checks_passed": 10,
+      "failed_ids": [],
+      "error_rounds": 0,
+      "handoff_missing": "없음"
+    }
+  ],
+  "fresh_folder_reproduction": {
+    "checkout_commit": "e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b",
+    "command": "python3 tests/t05_fixed_browser.py",
+    "result": "8/10 PASS; T05-F03, T05-F10 FAIL",
+    "handoff_original_sha256": "9b94778b717394cb8732f2f523be327cac4a0c557e512236d7a412044de3a08e",
+    "handoff_received_sha256": "9b94778b717394cb8732f2f523be327cac4a0c557e512236d7a412044de3a08e"
+  },
+  "fixed_check_changes": { "deleted": 0, "relaxed": 0, "expected_changed": 0 }
+}

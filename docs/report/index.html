@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>T05 · 대화가 끊겨도 이어지는 프로젝트</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#172637;background:#f2f6f6}
+    *{box-sizing:border-box}body{margin:0}a{color:#075f63;text-underline-offset:3px}a:hover{color:#023e43}
+    .hero{background:linear-gradient(125deg,#102736 0%,#173b45 57%,#236a61 100%);color:#f4fffb;padding:clamp(38px,7vw,90px) max(22px,calc((100vw - 1120px)/2)) 92px}
+    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.17em;text-transform:uppercase;color:#9eebc1}.hero h1{max-width:760px;margin:18px 0 16px;font-size:clamp(2.2rem,5.5vw,4.5rem);line-height:1.12;letter-spacing:-.05em}.hero p{max-width:670px;color:#d2e9e6;line-height:1.75;font-size:1.04rem}.hero .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}.hero .links a{border:1px solid #a8d9d0;color:#f4fffb;border-radius:999px;padding:10px 16px;text-decoration:none;font-weight:700;font-size:.9rem}.hero .links a:hover{background:#ffffff24}
+    main{max-width:1120px;margin:-53px auto 70px;padding:0 22px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#fff;border:1px solid #dae8e4;border-radius:18px;padding:20px 21px;box-shadow:0 10px 24px #1236320c}.metric strong{display:block;font-size:2rem;letter-spacing:-.04em;color:#133a3c}.metric span{font-size:.83rem;color:#526769;font-weight:650}
+    section{margin-top:32px;background:#fff;border:1px solid #dae8e4;border-radius:20px;padding:clamp(22px,4vw,38px);box-shadow:0 10px 24px #12363208}.section-kicker{margin:0 0 8px;color:#00786f;font-size:.77rem;font-weight:850;letter-spacing:.12em}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}.section-head h2{margin:0;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-.035em}.section-head p{margin:0;color:#5c6c71;line-height:1.6}.intro{line-height:1.8;color:#344b54;margin:20px 0 0}.pill{display:inline-block;border-radius:999px;background:#e7f7ee;color:#16614b;padding:6px 11px;font-weight:750;font-size:.78rem}
+    .table-wrap{overflow-x:auto;margin-top:23px}table{width:100%;border-collapse:collapse;text-align:left;min-width:690px}th,td{border-bottom:1px solid #e2ebeb;padding:13px 14px;vertical-align:top}th{background:#f3f8f7;color:#37555a;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}td{font-size:.92rem;line-height:1.5}tr:last-child td{border-bottom:0}.value{font-size:1.05rem;font-weight:850;color:#173c3d}.pass{color:#08714e;font-weight:850}.fail{color:#b65a37;font-weight:850}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.82rem;word-break:break-all}.muted{color:#607279}.note{font-size:.83rem;color:#607279;line-height:1.65;margin:16px 0 0}
+    .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:25px}.step{position:relative;border:1px solid #dbe8e6;background:#f7faf9;border-radius:15px;padding:18px}.step b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#1c665d;color:#fff;font-size:.82rem}.step h3{font-size:1rem;margin:12px 0 8px}.step p{font-size:.82rem;color:#5c6c71;line-height:1.6;margin:0 0 8px}.step a{font-size:.8rem;font-weight:750}
+    .handoff{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:22px}.handoff span{border:1px solid #d7e5e1;border-radius:10px;background:#f3f9f6;padding:12px 8px;text-align:center;color:#245a52;font-size:.8rem;font-weight:800}.decision{margin-top:18px;border-left:4px solid #2b8b72;background:#eef8f3;border-radius:0 10px 10px 0;padding:16px 18px;line-height:1.7}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.two-col p{line-height:1.7;color:#435a60}.footer{padding:28px 22px 50px;text-align:center;color:#708080;font-size:.82rem}
+    @media(max-width:850px){.metrics{grid-template-columns:repeat(2,1fr)}.timeline{grid-template-columns:repeat(2,1fr)}.handoff{grid-template-columns:repeat(4,1fr)}.two-col{grid-template-columns:1fr}}@media(max-width:500px){.metrics{gap:8px}.metric{padding:16px}.metric strong{font-size:1.6rem}.timeline{grid-template-columns:1fr}.handoff{grid-template-columns:repeat(2,1fr)}main{padding:0 14px}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="eyebrow">T05 / Sequential AI handoff</div>
+    <h1>대화가 끊겨도<br>검사는 이어진다</h1>
+    <p>T04 정보판의 재방문 기록 병합 한 기능을 두 AI 세션이 차례로 개선했다. 두 번째 세션은 앞 대화 없이 저장소와 7항목 인수인계 문서만 읽고 같은 고정 검사 10개를 완료했다.</p>
+    <nav class="links" aria-label="자료 바로가기">
+      <a href="../">개선된 정보판 보기 ↗</a>
+      <a href="https://github.com/yxh750501-sys/handoff-lab-t05/blob/f41c51a02ee077da29fe3a4d52d7b8ca6349f281/protocol/fixed-tests.json">사전 고정 검사 ↗</a>
+      <a href="https://github.com/yxh750501-sys/handoff-lab-t05/blob/49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151/HANDOFF.md">인수인계 7항목 ↗</a>
+    </nav>
+  </header>
+  <main>
+    <div class="metrics" aria-label="실험 요약">
+      <div class="metric"><strong>10개</strong><span>작업 전 고정 검사</span></div>
+      <div class="metric"><strong>8 → 10</strong><span>A 인계 → B 완료 통과 수</span></div>
+      <div class="metric"><strong>0건</strong><span>검사 삭제·완화·기대값 변경</span></div>
+      <div class="metric"><strong>2개</strong><span>서로 다른 모델 세션</span></div>
+    </div>
+    <section id="scope">
+      <p class="section-kicker">01 / 고정한 문제</p>
+      <div class="section-head"><h2>재방문하면 새 날짜도 보이게</h2><span class="pill">공통 상한 30분 · 35회</span></div>
+      <p class="intro">원래 정보판은 브라우저 저장소에 기록이 한 건이라도 있으면 새 공개 일별 기록을 가져오지 않았다. 개선 목표는 재방문 때 새 날짜를 안전하게 합치고, 같은 날짜는 조회 시각이 더 최신인 값만 남기는 것이다. 공개 JSON이 손상되면 기존 값은 유지한다.</p>
+      <p class="note">두 세션에 준 최초 기능 요청과 검사 목록은 시작 소스에 먼저 고정했다. 원형 소스의 결과는 <b>4/10 통과</b>였다. 고정 파일 SHA-256은 <span class="mono">3fbed28349ef68f076e171a22de4d86557ca4639e160b873d20e20bcd12370a8</span>이다.</p>
+    </section>
+    <section id="comparison">
+      <p class="section-kicker">02 / 이름을 가린 비교</p>
+      <div class="section-head"><h2>같은 상한, 같은 검사</h2><p>오류 회차 = 10개 검사 중 하나 이상 FAIL이 난 전체 실행 회차</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>익명 실행</th><th>실제 작업시간</th><th>도구 호출</th><th>오류 회차</th><th>고정 검사 통과</th><th>시작 → 종료 버전</th></tr></thead>
+        <tbody>
+          <tr><td><span class="value">실행 ①</span></td><td>1분 20초</td><td>13회</td><td>1회</td><td><span class="value">8 / 10</span></td><td class="mono"><a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/f41c51a02ee077da29fe3a4d52d7b8ca6349f281">f41c51a…</a> → <a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b">e6e15b9…</a></td></tr>
+          <tr><td><span class="value">실행 ②</span></td><td>1분 10초</td><td>15회</td><td>0회</td><td><span class="value">10 / 10</span></td><td class="mono"><a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b">e6e15b9…</a> → <a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151">49fd870…</a></td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">모델·서비스 이름은 이 판정 표에서 가렸다. 두 세션의 모델 ID는 서로 다르며 작업 순서와 원자료는 저장소의 과정 기록에 보관했다. 소스 추가·삭제 줄 수로 계산하는 재작업량은 고정 버전 쌍을 사용해 제출 뒤 산출한다.</p>
+    </section>
+    <section id="timeline">
+      <p class="section-kicker">03 / 작업 순서</p>
+      <div class="section-head"><h2>시작 → 인계 → 재개 → 완료</h2><p>2026년 10월 19일 · 한국시간</p></div>
+      <div class="timeline">
+        <div class="step"><b>1</b><h3>A 시작</h3><p>14:39:14 · 시작 소스와 검사 10개 고정<br>원형 4/10 통과</p><a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/f41c51a02ee077da29fe3a4d52d7b8ca6349f281">시작 버전 ↗</a></div>
+        <div class="step"><b>2</b><h3>A 종료·인계</h3><p>14:40:34 · 8/10 통과<br>남은 F03·F10과 다음 행동 기록</p><a href="https://github.com/yxh750501-sys/handoff-lab-t05/blob/49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151/HANDOFF.md">동일한 인수인계 문서 ↗</a></div>
+        <div class="step"><b>3</b><h3>B 시작</h3><p>14:43:30 · 새 폴더에서 A 버전 체크아웃<br>인수인계 원본·수신 SHA-256 일치</p><a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/e6e15b9c81e476e8deee2b0e3bd3ad25aed9102b">받은 버전 ↗</a></div>
+        <div class="step"><b>4</b><h3>B 완료</h3><p>14:44:40 · 같은 검사 10/10 통과<br>인수인계 누락 없음</p><a href="https://github.com/yxh750501-sys/handoff-lab-t05/tree/49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151">완료 버전 ↗</a></div>
+      </div>
+      <p class="note">새 폴더에서 A 체크포인트를 받고 인수인계 문서의 명령을 실행했을 때 F03·F10 실패를 그대로 재현했다. AI B에게는 이 체크아웃과 인수인계 문서만 전달했다. 문서의 7항목과 현재 버전 ID가 실제 A 체크포인트와 일치했다.</p>
+    </section>
+    <section id="checks">
+      <p class="section-kicker">04 / 고정 검사 결과</p>
+      <div class="section-head"><h2>열 개의 기대값을 끝까지 유지했다</h2><p>입력과 전체 기대값은 시작 커밋의 JSON에 고정</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>ID</th><th>사용자 입력과 관찰점</th><th>실행 ①</th><th>실행 ②</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">F01</td><td>새 방문 · 공개 이틀 기록과 −7.4 °C</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F02</td><td>재방문 · 새 날짜 자동 추가</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F03</td><td>같은 날짜 · 더 늦은 공개값 반영</td><td class="fail">FAIL</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F04</td><td>같은 날짜 · 더 최신 로컬값 유지</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F05</td><td>손상 JSON 뒤 기존 값 유지</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F06</td><td>잘못된 시간대 거부</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F07</td><td>내려받은 JSON에 새 원자료 포함</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F08</td><td>새로고침·공개 404 뒤 기록 보존</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F09</td><td>오래된 값 상태에서 새 정상값으로 복구</td><td class="pass">PASS</td><td class="pass">PASS</td></tr>
+          <tr><td class="mono">F10</td><td>오래된 날짜 보존 · 정수 기온 표기 · +1.6 °C</td><td class="fail">FAIL</td><td class="pass">PASS</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <section id="handoff">
+      <p class="section-kicker">05 / 문서로 이어받기</p>
+      <div class="section-head"><h2>한 페이지, 일곱 항목</h2><a href="https://github.com/yxh750501-sys/handoff-lab-t05/blob/49fd87022e97ddf5eb8b4b9c0fbe206cd5a63151/HANDOFF.md">인수인계 원문 읽기 ↗</a></div>
+      <div class="handoff"><span>목표</span><span>현재 상태</span><span>실행 명령</span><span>통과 검사</span><span>남은 문제</span><span>다음 행동</span><span>건드리지 말 것</span></div>
+      <p class="note">A가 남긴 문서와 B가 받은 문서의 SHA-256은 둘 다 <span class="mono">9b94778b717394cb8732f2f523be327cac4a0c557e512236d7a412044de3a08e</span>이다. B가 보고한 문서 누락은 없음. 대화 전문은 제출 자료에 포함하지 않았다.</p>
+    </section>
+    <section id="decision">
+      <p class="section-kicker">06 / 학생 판단</p>
+      <div class="section-head"><h2>다음 작업의 도구 선택 기준</h2></div>
+      <div class="decision" id="student-rule">고정 검사 통과 수를 우선 비교하고, 같으면 도구 호출 수가 적은 쪽을 고른다.</div>
+      <div class="two-col"><p><b>AI에게 맡긴 일.</b> 고정 검사 실행, 공개 기록 병합의 부분 구현과 인수인계, 다른 모델의 이어받기 및 최종 검사.</p><p><b>직접 판단한 일.</b> 동일한 검사·시간·호출 상한으로 비교하고 위 기준으로 다음 도구를 선택한다. <b>따르지 않은 AI 제안.</b> 없음. 제안을 고정 검사와 과제 범위에 대조했고 거절할 제안은 없었다.</p></div>
+    </section>
+  </main>
+  <footer class="footer">T05 · 공개 비교 보고서 · 원천 데이터는 비개인 공개 기온이며 합성 검사값과 분리해 기록했습니다.</footer>
+</body>
+</html>
